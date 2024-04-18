@@ -19,10 +19,6 @@ pub(crate) struct ParseGraphError(String);
 impl FromStr for Graph {
     type Err = ParseGraphError;
 
-    // 3
-    // 1,3 2,3
-    // 2,2 0,3
-    // 1,2 0,3
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let (n_vertices, edges) = s
             .split_once('\n')
