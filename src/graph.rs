@@ -11,8 +11,20 @@ pub(crate) struct Graph {
 }
 
 impl Graph {
-    fn new(adj: Vec<Vec<(usize, usize)>>, source_vertex: usize) -> Self {
+    pub fn new(adj: Vec<Vec<(usize, usize)>>, source_vertex: usize) -> Self {
         Self { adj, source_vertex }
+    }
+
+    pub fn n_vertices(&self) -> usize {
+        self.adj.len()
+    }
+
+    pub fn neighbors_of(&self, vertex: usize) -> &[(usize, usize)] {
+        &self.adj[vertex]
+    }
+
+    pub fn n_edges(&self) -> usize {
+        self.adj.iter().fold(0, |acc, x| acc + x.len())
     }
 }
 
@@ -32,11 +44,11 @@ impl FromStr for Graph {
         )?;
 
         let n_vertex = n_vertex_str
-            .parse::<usize>()
+            .parse()
             .map_err(|e| ParseGraphError(format!("cannot parse n_vertices: {}", e)))?;
 
         let source_vertex = source_str
-            .parse::<usize>()
+            .parse()
             .map_err(|e| ParseGraphError(format!("cannot parse source_str: {}", e)))?;
 
         let mut adj = vec![vec![]; n_vertex];
@@ -65,11 +77,12 @@ impl FromStr for Graph {
 }
 
 impl PartialEq for Graph {
+    // NOTE: we dont use source_vertex when checking if two graphs are equal
     fn eq(&self, other: &Self) -> bool {
-        // dont use source_vertex when checking if two graphs are equal
         if self.adj.len() != other.adj.len() {
             return false;
         }
+
         for (vertex, neighbors) in self.adj.iter().enumerate() {
             let other_neighbors = &other.adj[vertex];
             if neighbors.len() != other_neighbors.len() {
@@ -128,6 +141,27 @@ mod tests {
     }
 
     #[test]
+    fn correctly_unequal2() {
+        let g1 = Graph::new(
+            vec![
+                vec![(1, 3), (2, 3)],
+                vec![(2, 2), (0, 3)],
+                vec![(1, 2), (0, 2)],
+            ],
+            0,
+        );
+        let g2 = Graph::new(
+            vec![
+                vec![(1, 3), (2, 3)],
+                vec![(0, 3), (2, 2)],
+                vec![(0, 3), (1, 2)],
+            ],
+            0,
+        );
+        assert_ne!(g1, g2);
+    }
+
+    #[test]
     fn parses_correctly() {
         let graph_str = r#"3 1
 1,3 2,3
@@ -143,7 +177,10 @@ mod tests {
         );
         let parsed = Graph::from_str(graph_str);
         assert!(parsed.is_ok());
-        assert_eq!(parsed.unwrap(), should_be);
+
+        let parsed = parsed.unwrap();
+        assert_eq!(parsed, should_be);
+        assert_eq!(parsed.source_vertex, should_be.source_vertex);
     }
 
     #[test]
@@ -166,7 +203,10 @@ mod tests {
         );
         let parsed = Graph::from_str(graph_str);
         assert!(parsed.is_ok());
-        assert_eq!(parsed.unwrap(), should_be);
+
+        let parsed = parsed.unwrap();
+        assert_eq!(parsed, should_be);
+        assert_eq!(parsed.source_vertex, should_be.source_vertex);
     }
 
     #[test]
@@ -186,5 +226,20 @@ mod tests {
 1,2 0,3"#;
         let parsed = Graph::from_str(graph_str);
         assert!(parsed.is_err());
+    }
+
+    #[test]
+    fn n_edges_is_correct() {
+        let g1 = Graph::new(
+            vec![
+                vec![(1, 3), (3, 4)],
+                vec![(3, 4), (5, 2)],
+                vec![(4, 2), (3, 2)],
+                vec![(2, 2)],
+                vec![(4, 2), (3, 2), (1, 4)],
+            ],
+            1,
+        );
+        assert_eq!(g1.n_edges(), 10);
     }
 }
