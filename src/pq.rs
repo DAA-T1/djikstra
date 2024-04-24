@@ -1,6 +1,5 @@
 //! Memory safe minimum priority queue implementations.
 //!
-use itertools::Itertools;
 use std::{collections::HashMap, hash::Hash};
 
 /// Non-performant and easy min priority queue implementation.
@@ -60,15 +59,22 @@ where
     /// Extract the element with the smallest key from the queue.
     /// Returns the element and its associated key as a tuple.
     pub fn extract_min(&mut self) -> Option<(T, usize)> {
-        if let Some(min_key) = self
-            .map
-            .iter()
-            .sorted_by_key(|(_, value)| *value)
-            .map(|(key, _)| key)
-            .rev()
-            .last()
-            .cloned()
-        {
+        let mut min_value: Option<usize> = None;
+        let mut min_key: Option<T> = None;
+
+        for (key, value) in self.map.iter() {
+            if let Some(m_value) = min_value {
+                if m_value > *value {
+                    min_value = Some(*value);
+                    min_key = Some(key.clone());
+                }
+            } else {
+                min_value = Some(*value);
+                min_key = Some(key.clone());
+            }
+        }
+
+        if let Some(min_key) = min_key {
             self.map.remove_entry(&min_key)
         } else {
             None
