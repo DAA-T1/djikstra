@@ -59,6 +59,9 @@ where
     /// Extract the element with the smallest key from the queue.
     /// Returns the element and its associated key as a tuple.
     pub fn extract_min(&mut self) -> Option<(T, usize)> {
+        // the below code has to be implemented because of
+        // internal reference in min_by and read from here
+        // https://github.com/rust-lang/rust/issues/27724#issuecomment-161772708
         let mut min_value: Option<usize> = None;
         let mut min_key: Option<T> = None;
 
