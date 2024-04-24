@@ -1,7 +1,7 @@
 //! Memory safe minimum priority queue implementations.
 //!
 use itertools::Itertools;
-use std::{collections::HashMap, fmt::Debug, hash::Hash};
+use std::{collections::HashMap, hash::Hash};
 
 /// Non-performant and easy min priority queue implementation.
 ///
@@ -10,14 +10,14 @@ use std::{collections::HashMap, fmt::Debug, hash::Hash};
 /// A key cannot have a value below 0.
 pub struct PriorityQueue<T>
 where
-    T: Ord + Debug,
+    T: Ord,
 {
     map: HashMap<T, usize>,
 }
 
 impl<T> PriorityQueue<T>
 where
-    T: Ord + Debug + Hash + Clone,
+    T: Ord + Hash + Clone,
 {
     /// Create a new PriorityQueue with no elements.
     pub fn new() -> Self {
