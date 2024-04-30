@@ -62,7 +62,35 @@ mod tests {
             vec![(0, 1), (1, 2), (3, 5)],
             vec![(1, 5), (2, 1)],
         ]);
-        let (paths, dists) = djikstra(&g1, 2);
+        let (paths, _dists) = djikstra(&g1, 2);
         assert_eq!(paths, vec![vec![2, 0], vec![2, 1], vec![2], vec![2, 3]])
     }
+
+    #[test]
+    fn correct_path_lg() {
+        let g1 = Graph::new(vec![
+            vec![(1, 3), (6, 2)],
+            vec![(0, 3), (2, 4), (3, 1), (6, 1), (4, 4), (7, 6)],
+            vec![(6, 6), (1, 4), (3, 2), (4, 2)],
+            vec![(1, 1), (2, 2), (4, 1), (7, 2)],
+            vec![(2, 2), (3, 1), (1, 4), (7, 1), (5, 3)],
+            vec![(4, 3), (7, 4)],
+            vec![(0, 2), (1, 1), (2, 6), (4, 5)],
+            vec![(4, 1), (5, 4), (3, 2), (1, 6)]
+        ]);
+    
+        let (paths, _dists) = djikstra(&g1, 6);
+
+        assert_eq!(paths, vec![
+            vec![6, 0],
+            vec![6, 1],
+            vec![6, 1, 3, 2],
+            vec![6, 1, 3],
+            vec![6, 1, 3, 4],
+            vec![6, 1, 3, 4, 5],
+            vec![6],
+            vec![6, 1, 3, 7]
+        ]);
+    }
 }
+
