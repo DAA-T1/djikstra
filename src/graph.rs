@@ -1,27 +1,48 @@
 use std::str::FromStr;
 
+/// Graph data structure based on adjacency lists.
+///
+/// NOTE: no guarantees about the graph being in a valid state are made
+/// and the user must therefore make sure that the string they are parsing
+/// or they vector they are making a graph out of is a valid graph
+///
 #[derive(Debug)]
 pub(crate) struct Graph {
+    // `adj` is the adjacency list
     // the index corresponds to a vertex and the value at that index
-    // are its neighbors
+    // is the list of neighbors with associated weights
     pub adj: Vec<Vec<(usize, usize)>>,
 }
 
 impl Graph {
+    /// create a graph from a given adjacency list
+    ///
+    /// # Example
+    /// ```ignore
+    /// let adj_list = vec![
+    ///     vec![(2, 3), (1, 3)],
+    ///     vec![(0, 3)],
+    ///     vec![(0, 3)]
+    /// ];
+    /// let graph = Graph::new(adj_list);
+    /// ```
     pub fn new(adj: Vec<Vec<(usize, usize)>>) -> Self {
         Self { adj }
     }
 
+    /// number of vertices
     pub fn n_vertices(&self) -> usize {
         self.adj.len()
     }
 
-    pub fn neighbors_of(&self, vertex: usize) -> &[(usize, usize)] {
-        &self.adj[vertex]
-    }
-
+    /// number of edges
     pub fn n_edges(&self) -> usize {
         self.adj.iter().fold(0, |acc, x| acc + x.len())
+    }
+
+    /// get neighbors of a vertex
+    pub fn neighbors_of(&self, vertex: usize) -> &[(usize, usize)] {
+        &self.adj[vertex]
     }
 }
 
@@ -31,6 +52,19 @@ pub(crate) struct ParseGraphError(String);
 impl FromStr for Graph {
     type Err = ParseGraphError;
 
+    /// Parse a string into a graph
+    /// # Examples
+    /// ```ignore
+    /// // creating a graph by parsing a string
+    /// let graph_str = r#"3
+    /// 2,3 1,3
+    /// 0,3
+    /// 0,3"#;
+    ///
+    /// let graph1 = Graph::from_str(graph_str);
+    /// // or alternatively
+    /// let graph2: Graph = graph_str.parse();
+    /// ```
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let (n_vertex_str, edges) = s
             .split_once('\n')
@@ -66,6 +100,15 @@ impl FromStr for Graph {
 }
 
 impl PartialEq for Graph {
+    // we consider two graphs equal if each of their
+    // vertices have the same neighbors with same associated weights.
+    // the order in which the vertices are in the neighbor vector of
+    // a specific vertex does not matter. i.e, we consider the two graphs
+    // [[(1, 2), (2, 2)], [0, 2], [0, 2]] and
+    // [[(2, 2), (1, 2)], [0, 2], [0, 2]] equal.
+    //
+    // NOTE: there might be a better way of implementing this
+    // but oh well...
     fn eq(&self, other: &Self) -> bool {
         if self.adj.len() != other.adj.len() {
             return false;
