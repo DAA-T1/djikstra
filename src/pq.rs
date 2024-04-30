@@ -41,7 +41,7 @@ where
     /// ```
     pub fn from_keys_values(input: Vec<(T, usize)>) -> Self {
         Self {
-            map: HashMap::from_iter(input.into_iter().map(|(item, val)| (item, val))),
+            map: HashMap::from_iter(input),
         }
     }
     /// Insert a new element with its key into the priority queue.

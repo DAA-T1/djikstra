@@ -19,6 +19,10 @@ Blazingly Fast Djikstra's Path Finding Algorithm.
 - Build and Run: `cargo run -- <arguments>`.
 - Or, see your `/target` folder.
 
+## Docs
+
+- Use `cargo doc --open` to browse the documentation in your browser.
+
 ## Tests
 
 - sample present in `graph.rs`.
