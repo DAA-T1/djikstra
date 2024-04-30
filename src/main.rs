@@ -1,4 +1,4 @@
-use std::time::{Duration, Instant};
+use std::time::Instant;
 use std::{fs, path::PathBuf, str::FromStr};
 
 use clap::{Args, Parser, Subcommand};
@@ -151,8 +151,9 @@ fn parse_input(input_path: &PathBuf) -> Result<(i64, graph::Graph), InputError> 
     Ok((start_vertex, graph))
 }
 
+#[cfg(test)]
 mod test {
-
+    
     use super::*;
 
     #[test]
