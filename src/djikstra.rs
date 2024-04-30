@@ -6,7 +6,7 @@ use crate::pq::PriorityQueue;
 
 /// Djikstra algorithm that takes in a graph and a source node!
 /// Returns a list of paths
-pub fn djikstra(graph: &Graph, src: usize) -> Vec<Vec<usize>> {
+pub fn djikstra(graph: &Graph, src: usize) -> (Vec<Vec<usize>>, Vec<usize>) {
     let n_elems = graph.n_vertices();
     let mut parents = vec![None; n_elems];
     let mut dists_from_src = vec![usize::MAX; n_elems];
@@ -33,7 +33,7 @@ pub fn djikstra(graph: &Graph, src: usize) -> Vec<Vec<usize>> {
 
     let mut paths_from_src: Vec<Vec<usize>> = vec![vec![]; n_elems];
     for idx in 0..=(n_elems - 1) {
-        if (idx != src) {
+        if idx != src {
             let mut paths: Vec<usize> = vec![idx];
             let mut parent = parents[idx];
             while parent.unwrap() != src {
@@ -46,17 +46,7 @@ pub fn djikstra(graph: &Graph, src: usize) -> Vec<Vec<usize>> {
     }
     paths_from_src[src].append(&mut vec![src]);
 
-    for idx in 0..=(n_elems - 1) {
-        let path = &paths_from_src[idx];
-        print!("{idx} {} ", dists_from_src[idx] );
-        print!("{}", path[0]);
-        for j in 1..=(path.len() - 1) {
-            print!(" -> {}", path[j]);
-        }
-        print!("\n");
-    }
-
-    paths_from_src
+    (paths_from_src, dists_from_src)
 }
 
 // #[cfg(test)]

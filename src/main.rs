@@ -1,11 +1,10 @@
 //! CLI interface for running and benchmarking the Djikstra algorithm.
-
-use std::time::Instant;
-use std::{fs, path::PathBuf, str::FromStr};
-
 use clap::{Args, Parser, Subcommand};
-
-mod graph;
+use djikstra::djikstra::djikstra;
+use djikstra::graph::Graph;
+use std::str::FromStr;
+use std::time::Instant;
+use std::{fs, path::PathBuf};
 
 /// CLI interface for running and benchmarking the Djikstra algorithm.
 #[derive(Parser)]
@@ -86,11 +85,22 @@ fn run_command(args: &RunArgs, verbose: bool) {
 
     // run the algorithm
     let start = Instant::now();
-    // TODO: ADD DJIKSTRA FUNCTION CALL
+    let (paths_from_src, dists_from_src) = djikstra(&graph, start_vertex);
     let duration = start.elapsed();
+    for idx in 0..=(graph.n_vertices() - 1) {
+        let path = &paths_from_src[idx];
+        print!("{idx} {} ", dists_from_src[idx]);
+        print!("{}", path[0]);
+        for j in 1..=(path.len() - 1) {
+            print!(" -> {}", path[j]);
+        }
+        println!();
+    }
+
     if verbose {
         println!("Algorithm ran in {0} ns.", duration.as_nanos());
     }
+    
 }
 
 /// Benchmark the Djikstra algorithm on the input graph.
@@ -118,18 +128,17 @@ fn benchmark_command(args: &BenchmarkArgs, verbose: bool) {
     }
 
     // benchmark the algorithm
-    // store the results in a vector
-    let mut results: Vec<i64> = vec![0; args.n];
+    let mut results: Vec<u128> = vec![0; args.n];
 
-    for _ in 0..args.n {
+    for i in 0..args.n {
         let start = Instant::now();
-        // TODO: ADD DJIKSTRA FUNCTION CALL
+        let (_paths_from_src, _dists_from_src) = djikstra(&graph, start_vertex);
         let duration = start.elapsed();
 
-        results.push(duration.as_nanos() as i64);
+        results[i] = duration.as_nanos();
     }
 
-    let avg_time = results.iter().sum::<i64>() / results.len() as i64;
+    let avg_time = results.iter().sum::<u128>() / results.len() as u128;
 
     println!("Average time: {0} ns", avg_time);
 
@@ -143,7 +152,7 @@ fn benchmark_command(args: &BenchmarkArgs, verbose: bool) {
 struct InputError(String);
 
 /// Parse the input file into a start vertex and a graph.
-fn parse_input(input_path: &PathBuf) -> Result<(i64, graph::Graph), InputError> {
+fn parse_input(input_path: &PathBuf) -> Result<(usize, Graph), InputError> {
     let contents = fs::read_to_string(input_path);
     let contents = contents.map_err(|e| InputError(format!("error reading file: {}", e)))?;
 
@@ -151,11 +160,11 @@ fn parse_input(input_path: &PathBuf) -> Result<(i64, graph::Graph), InputError> 
         .split_once('\n')
         .ok_or(InputError("cannot split on newline".to_string()))?;
 
-    let start_vertex: i64 = start_vertex_str
+    let start_vertex: usize = start_vertex_str
         .parse()
         .map_err(|e| InputError(format!("cannot parse start vertex: {}", e)))?;
 
-    let graph = graph::Graph::from_str(graph_data)
+    let graph = Graph::from_str(graph_data)
         .map_err(|e| InputError(format!("cannot parse graph: {}", e)))?;
 
     Ok((start_vertex, graph))
@@ -168,9 +177,9 @@ mod test {
 
     #[test]
     fn test_parse_input() {
-        let expected: (i64, graph::Graph) = (
+        let expected: (usize, Graph) = (
             2,
-            graph::Graph::new(vec![
+            Graph::new(vec![
                 vec![(1, 3), (3, 4)],
                 vec![(3, 4), (5, 2)],
                 vec![(4, 2), (3, 2)],

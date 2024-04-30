@@ -263,7 +263,7 @@ mod tests {
         ]);
         assert_eq!(g1.n_edges(), 10);
     }
-  
+
     #[test]
     fn parses_empty_graph() {
         let graph_str = r#"3
