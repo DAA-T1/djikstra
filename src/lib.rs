@@ -1,3 +1,3 @@
 mod djikstra;
 mod graph;
-mod pqueue;
+mod pq;
