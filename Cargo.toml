@@ -2,7 +2,7 @@
 name = "djikstra"
 version = "0.1.0"
 edition = "2021"
-authors = ["Pranjal Rastogi <pranjal.rastogi@plaksha.edu.in>"]
+authors = ["T1"]
 description = """Implements Djikstra's algorithm for finding the shortest path in a graph in Rust."""
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
