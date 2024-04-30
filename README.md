@@ -28,12 +28,14 @@ Blazingly Fast Djikstra's Path Finding Algorithm.
 Adjacency List of Length N, in the form:
 
 ```txt
-5 StartVertex
+Number_of_Vertices 
 Vertex,Weight Vertex,Weight
 Vertex,Weight
 ```
 
 Each line represents a vertex and its edges.
+
+The files will only have the input for the graph and the source vertex could then be passed as a separate command line option.
 
 ## Output
 
