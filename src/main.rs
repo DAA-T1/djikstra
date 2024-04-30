@@ -84,7 +84,6 @@ fn run_command(args: &RunArgs, verbose: bool) {
     if verbose {
         println!("Algorithm ran in {0} ns.", duration.as_nanos());
     }
-
 }
 
 fn benchmark_command(args: &BenchmarkArgs, verbose: bool) {
@@ -99,7 +98,10 @@ fn benchmark_command(args: &BenchmarkArgs, verbose: bool) {
     };
 
     if verbose {
-        println!("Benchmarking {0:?} over {1:?} times.", &args.input_path, args.n);
+        println!(
+            "Benchmarking {0:?} over {1:?} times.",
+            &args.input_path, args.n
+        );
         println!(
             "Algorithm will run on graph with {0} vertices and start vertex {1}.\n",
             graph.n_vertices(),
@@ -149,24 +151,26 @@ fn parse_input(input_path: &PathBuf) -> Result<(i64, graph::Graph), InputError> 
     Ok((start_vertex, graph))
 }
 
-
-mod test { 
+mod test {
 
     use super::*;
 
     #[test]
     fn test_parse_input() {
-        let expected: (i64, graph::Graph) = (2, graph::Graph::new(vec![
-            vec![(1, 3), (3, 4)],
-            vec![(3, 4), (5, 2)],
-            vec![(4, 2), (3, 2)],
-            vec![(2, 2)],
-            vec![(4, 2), (3, 2), (1, 4)],
-        ]));
-        
+        let expected: (i64, graph::Graph) = (
+            2,
+            graph::Graph::new(vec![
+                vec![(1, 3), (3, 4)],
+                vec![(3, 4), (5, 2)],
+                vec![(4, 2), (3, 2)],
+                vec![(2, 2)],
+                vec![(4, 2), (3, 2), (1, 4)],
+            ]),
+        );
+
         // let input = "1\n4\n1,2 2,3\n3,4"; // IS THERE A WAY TO MOCK A FILE?
         // let fake_file = PathBuf::from("fake_file.txt"); // IS THERE A WAY TO MOCK A FILE?
-        
+
         let path: PathBuf = ["data", "sample_input.txt"].iter().collect();
         let (start_vertex, graph) = parse_input(&path).unwrap();
 
