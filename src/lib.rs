@@ -1,3 +1,3 @@
 mod djikstra;
-mod graph;
+pub mod graph;
 mod pq;

@@ -7,7 +7,7 @@ use std::str::FromStr;
 /// or they vector they are making a graph out of is a valid graph
 ///
 #[derive(Debug)]
-pub(crate) struct Graph {
+pub struct Graph {
     // `adj` is the adjacency list
     // the index corresponds to a vertex and the value at that index
     // is the list of neighbors with associated weights
@@ -18,7 +18,9 @@ impl Graph {
     /// create a graph from a given adjacency list
     ///
     /// # Example
-    /// ```ignore
+    /// ```
+    /// use djikstra::graph::Graph;
+    ///
     /// let adj_list = vec![
     ///     vec![(2, 3), (1, 3)],
     ///     vec![(0, 3)],
@@ -47,14 +49,17 @@ impl Graph {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct ParseGraphError(String);
+pub struct ParseGraphError(String);
 
 impl FromStr for Graph {
     type Err = ParseGraphError;
 
     /// Parse a string into a graph
     /// # Examples
-    /// ```ignore
+    /// ```
+    /// use djikstra::graph::Graph;
+    /// use std::str::FromStr;
+    ///
     /// // creating a graph by parsing a string
     /// let graph_str = r#"3
     /// 2,3 1,3
@@ -63,7 +68,7 @@ impl FromStr for Graph {
     ///
     /// let graph1 = Graph::from_str(graph_str);
     /// // or alternatively
-    /// let graph2: Graph = graph_str.parse();
+    /// let graph2 = graph_str.parse::<Graph>();
     /// ```
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let (n_vertex_str, edges) = s
