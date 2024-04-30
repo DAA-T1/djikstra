@@ -1,7 +1,7 @@
 use std::str::FromStr;
 
 #[derive(Debug)]
-pub(crate) struct Graph {
+pub struct Graph {
     // the index corresponds to a vertex and the value at that index
     // are its neighbors
     pub adj: Vec<Vec<(usize, usize)>>,
@@ -26,7 +26,7 @@ impl Graph {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct ParseGraphError(String);
+pub struct ParseGraphError(String);
 
 impl FromStr for Graph {
     type Err = ParseGraphError;
