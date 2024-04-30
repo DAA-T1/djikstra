@@ -1,6 +1,6 @@
 # Djikstra
 
-Rusty Djikstra
+Blazingly Fast Djikstra's Path Finding Algorithm.
 
 ## The Question
 
