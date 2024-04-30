@@ -1,4 +1,4 @@
-use std::str::FromStr;
+use std::{fmt, str::FromStr};
 
 /// Graph data structure based on adjacency lists
 ///
@@ -53,6 +53,12 @@ impl Graph {
 /// The cause of the error is within the struct and can be accessed easily
 #[derive(Debug, PartialEq, Eq)]
 pub struct ParseGraphError(String);
+
+impl fmt::Display for ParseGraphError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
 
 impl FromStr for Graph {
     type Err = ParseGraphError;
