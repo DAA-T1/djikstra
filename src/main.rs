@@ -153,7 +153,7 @@ fn parse_input(input_path: &PathBuf) -> Result<(i64, graph::Graph), InputError> 
 
 #[cfg(test)]
 mod test {
-    
+
     use super::*;
 
     #[test]
