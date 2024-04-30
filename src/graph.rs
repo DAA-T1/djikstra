@@ -228,7 +228,7 @@ mod tests {
     fn parses_graph_last_empty() {
         let graph_str = r#"5
 3,3
-e2,1
+2,1
 1,1
 0,3"#;
         let should_be = Graph::new(vec![
