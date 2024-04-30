@@ -11,7 +11,7 @@ pub struct PriorityQueue<T>
 where
     T: Ord,
 {
-    map: HashMap<T, usize>,
+    pub map: HashMap<T, usize>,
 }
 
 impl<T> PriorityQueue<T>
@@ -26,10 +26,10 @@ where
     }
 
     /// Create a new PriorityQueue from a vector of elements without keys.
-    /// Keys will be set to 0 as default
+    /// Keys will be set to usize::MAX as default
     pub fn from_keys(input: Vec<T>) -> Self {
         Self {
-            map: HashMap::from_iter(input.into_iter().map(|item| (item, 0))),
+            map: HashMap::from_iter(input.into_iter().map(|item| (item, usize::MAX))),
         }
     }
 
@@ -99,14 +99,15 @@ mod tests {
 
     #[test]
     fn changes_key() {
-        let numbers = vec![(-1, 1), (3, 3), (2, 2), (4, 4)];
+        let numbers = vec![(0, 0), (1, usize::MAX), (2, usize::MAX), (3, usize::MAX)];
         let mut pq = PriorityQueue::from_keys_values(numbers);
         // check for key increase
-        pq.change_key(&-1, 10);
-        assert_eq!(pq.extract_min(), Some((2, 2)));
+        pq.change_key(&1, 4);
+        pq.change_key(&2, 1);
+        pq.extract_min();
+        assert_eq!(pq.extract_min(), Some((2, 1)));
+
         // check for key decrease
-        pq.change_key(&4, 1);
-        assert_eq!(pq.extract_min(), Some((4, 1)));
     }
 
     #[test]
