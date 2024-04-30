@@ -153,19 +153,31 @@ mod tests {
     }
 
     #[test]
-    fn parses_pjrs_graph() {
+    fn parses_correctly_one_empty() {
+        let graph_str = r#"3
+1,3
+
+0,3"#;
+        let should_be = Graph::new(vec![vec![(1, 3)], vec![], vec![(0, 3)]]);
+        let parsed = Graph::from_str(graph_str);
+        assert!(parsed.is_ok());
+
+        assert_eq!(parsed.unwrap(), should_be);
+    }
+
+    #[test]
+    fn parses_graph_last_empty() {
         let graph_str = r#"5
-1,3 3,4
-3,4 5,2
-4,2 3,2
-2,2
-4,2 3,2 1,4"#;
+3,3
+2,1
+1,1
+0,3"#;
         let should_be = Graph::new(vec![
-            vec![(1, 3), (3, 4)],
-            vec![(3, 4), (5, 2)],
-            vec![(4, 2), (3, 2)],
-            vec![(2, 2)],
-            vec![(4, 2), (3, 2), (1, 4)],
+            vec![(3, 3)],
+            vec![(2, 1)],
+            vec![(1, 1)],
+            vec![(0, 3)],
+            vec![],
         ]);
         let parsed = Graph::from_str(graph_str);
         assert!(parsed.is_ok());
@@ -191,5 +203,34 @@ mod tests {
             vec![(4, 2), (3, 2), (1, 4)],
         ]);
         assert_eq!(g1.n_edges(), 10);
+    }
+
+    #[test]
+    fn parses_empty_graph() {
+        let graph_str = r#"3
+
+
+"#;
+        let parsed = Graph::from_str(graph_str);
+
+        let should_be = Graph::new(vec![vec![]; 3]);
+
+        assert!(parsed.is_ok());
+        assert_eq!(parsed.unwrap(), should_be);
+    }
+
+    #[test]
+    fn parses_graph_with_one_elist() {
+        let graph_str = r#"4
+
+
+3,3
+2,3"#;
+        let parsed = Graph::from_str(graph_str);
+
+        let should_be = Graph::new(vec![vec![], vec![], vec![(3, 3)], vec![(2, 3)]]);
+
+        assert!(parsed.is_ok());
+        assert_eq!(parsed.unwrap(), should_be);
     }
 }
