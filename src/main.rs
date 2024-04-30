@@ -138,7 +138,6 @@ fn benchmark_command(args: &BenchmarkArgs, verbose: bool) {
     }
 }
 
-
 /// The error type returned when we run into any error when parsing
 #[derive(Debug)]
 struct InputError(String);
