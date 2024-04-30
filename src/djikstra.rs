@@ -49,20 +49,20 @@ pub fn djikstra(graph: &Graph, src: usize) -> (Vec<Vec<usize>>, Vec<usize>) {
     (paths_from_src, dists_from_src)
 }
 
-// #[cfg(test)]
-// mod tests {
-//     use crate::djikstra::djikstra;
-//     use crate::graph::Graph;
+#[cfg(test)]
+mod tests {
+    use crate::djikstra::djikstra;
+    use crate::graph::Graph;
 
-//     #[test]
-//     fn correct_path() {
-//         let g1 = Graph::new(vec![
-//             vec![(1, 4), (2, 1)],
-//             vec![(0, 4), (2, 2), (3, 5)],
-//             vec![(0, 1), (1, 2), (3, 5)],
-//             vec![(1, 5), (2, 1)],
-//         ]);
-//         let paths = djikstra(&g1, 2);
-//         assert_eq!(paths, vec![vec![2, 0], vec![2, 1], vec![2], vec![3, 2]])
-//     }
-// }
+    #[test]
+    fn correct_path() {
+        let g1 = Graph::new(vec![
+            vec![(1, 4), (2, 1)],
+            vec![(0, 4), (2, 2), (3, 5)],
+            vec![(0, 1), (1, 2), (3, 5)],
+            vec![(1, 5), (2, 1)],
+        ]);
+        let (paths, dists) = djikstra(&g1, 2);
+        assert_eq!(paths, vec![vec![2, 0], vec![2, 1], vec![2], vec![2, 3]])
+    }
+}

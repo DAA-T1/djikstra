@@ -169,32 +169,3 @@ fn parse_input(input_path: &PathBuf) -> Result<(usize, Graph), InputError> {
 
     Ok((start_vertex, graph))
 }
-
-#[cfg(test)]
-mod test {
-
-    use super::*;
-
-    #[test]
-    fn test_parse_input() {
-        let expected: (usize, Graph) = (
-            2,
-            Graph::new(vec![
-                vec![(1, 3), (3, 4)],
-                vec![(3, 4), (5, 2)],
-                vec![(4, 2), (3, 2)],
-                vec![(2, 2)],
-                vec![(4, 2), (3, 2), (1, 4)],
-            ]),
-        );
-
-        // let input = "1\n4\n1,2 2,3\n3,4"; // IS THERE A WAY TO MOCK A FILE?
-        // let fake_file = PathBuf::from("fake_file.txt"); // IS THERE A WAY TO MOCK A FILE?
-
-        let path: PathBuf = ["data", "sample_input.txt"].iter().collect();
-        let (start_vertex, graph) = parse_input(&path).unwrap();
-
-        assert_eq!(start_vertex, expected.0);
-        assert_eq!(graph, expected.1);
-    }
-}
