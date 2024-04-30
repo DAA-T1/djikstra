@@ -42,7 +42,7 @@ impl FromStr for Graph {
 
         let mut adj = vec![vec![]; n_vertex];
 
-        for (vertex, neighbors) in edges.lines().enumerate() {
+        for (vertex, neighbors) in edges.lines().take(n_vertex).enumerate() {
             let neighbors_parsed = neighbors.split_whitespace().map(|edge_str| {
                 edge_str.split_once(',').ok_or(ParseGraphError(
                     "vertex doesnt have weight with it".to_string(),
