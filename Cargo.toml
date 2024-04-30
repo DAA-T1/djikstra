@@ -6,3 +6,4 @@ authors = ["T1"]
 description = """Implements Djikstra's algorithm for finding the shortest path in a graph in Rust."""
 
 [dependencies]
+clap = { version = "4.0", features = ["derive"] }
