@@ -1,3 +1,5 @@
+//! CLI interface for running and benchmarking the Djikstra algorithm.
+
 use std::time::Instant;
 use std::{fs, path::PathBuf, str::FromStr};
 
@@ -5,6 +7,7 @@ use clap::{Args, Parser, Subcommand};
 
 mod graph;
 
+/// CLI interface for running and benchmarking the Djikstra algorithm.
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
 struct Cli {
@@ -12,6 +15,7 @@ struct Cli {
     #[arg(short, long, global = true)]
     verbose: bool,
 
+    /// Subcommands.
     #[command(subcommand)]
     command: Commands,
 }
@@ -25,6 +29,7 @@ enum Commands {
     Benchmark(BenchmarkArgs),
 }
 
+/// Arguments for the run subcommand.
 #[derive(Args)]
 struct RunArgs {
     /// Input file that contains the graph.
@@ -32,6 +37,7 @@ struct RunArgs {
     input_path: PathBuf,
 }
 
+/// Arguments for the benchmark subcommand.
 #[derive(Args)]
 struct BenchmarkArgs {
     /// Input file that contains the graph.
@@ -57,6 +63,7 @@ fn main() {
     }
 }
 
+/// Run the Djikstra algorithm on the input graph.
 fn run_command(args: &RunArgs, verbose: bool) {
     // djikstra run --input graph.txt --verbose
 
@@ -86,6 +93,7 @@ fn run_command(args: &RunArgs, verbose: bool) {
     }
 }
 
+/// Benchmark the Djikstra algorithm on the input graph.
 fn benchmark_command(args: &BenchmarkArgs, verbose: bool) {
     // djikstra benchmark --input graph.txt -n 1000
 
@@ -130,9 +138,12 @@ fn benchmark_command(args: &BenchmarkArgs, verbose: bool) {
     }
 }
 
+
+/// The error type returned when we run into any error when parsing
 #[derive(Debug)]
 struct InputError(String);
 
+/// Parse the input file into a start vertex and a graph.
 fn parse_input(input_path: &PathBuf) -> Result<(i64, graph::Graph), InputError> {
     let contents = fs::read_to_string(input_path);
     let contents = contents.map_err(|e| InputError(format!("error reading file: {}", e)))?;
