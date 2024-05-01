@@ -36,7 +36,7 @@ pub fn djikstra(graph: &Graph, src: usize) -> (Vec<Vec<usize>>, Vec<usize>) {
         if idx != src {
             let mut paths: Vec<usize> = vec![idx];
             let mut parent = parents[idx];
-            while parent.unwrap() != src {
+            while parent.unwrap_or_default() != src {
                 paths.insert(0, parent.unwrap());
                 parent = parents[parent.unwrap()];
             }
