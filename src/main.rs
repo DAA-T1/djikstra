@@ -87,19 +87,18 @@ fn run_command(args: &RunArgs, verbose: bool) {
     let start = Instant::now();
     let (paths_from_src, dists_from_src) = djikstra(&graph, start_vertex);
     let duration = start.elapsed();
+
     for idx in 0..=(graph.n_vertices() - 1) {
         let path = &paths_from_src[idx];
         print!("{idx} {} ", dists_from_src[idx]);
-        print!("{}", path[0]);
+        print!("({}", path[0]);
         for j in 1..=(path.len() - 1) {
             print!(" -> {}", path[j]);
         }
-        println!();
+        println!(")");
     }
 
-    if verbose {
-        println!("Algorithm ran in {0} ns.", duration.as_nanos());
-    }
+    println!("Algorithm ran in {0}ns.", duration.as_nanos());
     
 }
 
@@ -139,12 +138,7 @@ fn benchmark_command(args: &BenchmarkArgs, verbose: bool) {
     }
 
     let avg_time = results.iter().sum::<u128>() / results.len() as u128;
-
-    println!("Average time: {0} ns", avg_time);
-
-    if verbose {
-        println!("Results: {0:?}", results);
-    }
+    println!("Average time: {0}ns", avg_time);
 }
 
 /// The error type returned when we run into any error when parsing
