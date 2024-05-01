@@ -34,21 +34,27 @@ where
         Self::default()
     }
 
-    /// Create a new PriorityQueue from a vector of elements without keys.
+    /// Create a new PriorityQueue from an iterator of elements without keys.
     /// Keys will be set to usize::MAX as default
-    pub fn from_keys(input: Vec<T>) -> Self {
+    pub fn from_keys<I>(input: I) -> Self
+    where
+        I: IntoIterator<Item = T>,
+    {
         Self {
             map: HashMap::from_iter(input.into_iter().map(|item| (item, usize::MAX))),
         }
     }
 
-    /// Create a new PriorityQueue from a vector of tuples containing elements and their respective keys.
+    /// Create a new PriorityQueue from a iterator of tuples containing elements and their respective keys.
     ///
     /// Example input:
     /// ```
     /// let valid_vec_w_keys = vec![(-1, 1), (3, 3), (2, 2), (4, 4)];
     /// ```
-    pub fn from_keys_values(input: Vec<(T, usize)>) -> Self {
+    pub fn from_keys_values<I>(input: I) -> Self
+    where
+        I: IntoIterator<Item = (T, usize)>,
+    {
         Self {
             map: HashMap::from_iter(input),
         }
@@ -74,14 +80,14 @@ where
         let mut min_value: Option<usize> = None;
         let mut min_key: Option<T> = None;
 
-        for (key, value) in self.map.iter() {
+        for (key, &value) in self.map.iter() {
             if let Some(m_value) = min_value {
-                if m_value > *value {
-                    min_value = Some(*value);
+                if m_value > value {
+                    min_value = Some(value);
                     min_key = Some(key.clone());
                 }
             } else {
-                min_value = Some(*value);
+                min_value = Some(value);
                 min_key = Some(key.clone());
             }
         }
