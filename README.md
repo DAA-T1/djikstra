@@ -17,13 +17,20 @@ Blazingly Fast Djikstra's Path Finding Algorithm implemented in Rust.
 - Example: `cargo run --release -- run --input input.txt`.
 - Example: `cargo run --release -- benchmark --input input.txt -n 100000`.
 
+## Tests for Correctness
+
+Run testcases to check for correctness using `cargo test`.
+
+## Advanced Tests
+
+- We have testcases (and their expected output) in the `tests` directory. The expected output is generated using the `networkX` library in Python.
+- Run the files using `cargo run --release -- run --input data/<filename>.txt` and compare the output with the expected output using the `diff` command.
+- All the testcases are correct and have been verified using the above approach.
+
 ## Documentation
 
 Use `cargo doc --open` to browse the documentation in your browser.
 
-## Tests for Correctness
-
-Run testcases to check for correctness using `cargo test`.
 
 ## Input
 
