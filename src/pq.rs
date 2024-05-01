@@ -14,15 +14,24 @@ where
     pub map: HashMap<T, usize>,
 }
 
+impl<T> Default for PriorityQueue<T>
+where
+    T: Ord + Hash + Clone,
+{
+    fn default() -> Self {
+        Self {
+            map: HashMap::new(),
+        }
+    }
+}
+
 impl<T> PriorityQueue<T>
 where
     T: Ord + Hash + Clone,
 {
     /// Create a new PriorityQueue with no elements.
     pub fn new() -> Self {
-        Self {
-            map: HashMap::new(),
-        }
+        Self::default()
     }
 
     /// Create a new PriorityQueue from a vector of elements without keys.
