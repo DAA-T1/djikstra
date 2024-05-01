@@ -31,20 +31,16 @@ pub fn djikstra(graph: &Graph, src: usize) -> (Vec<Vec<usize>>, Vec<usize>) {
         checked[node] = true;
     }
 
-    let mut paths_from_src: Vec<Vec<usize>> = vec![vec![]; n_elems];
-    for idx in 0..=(n_elems - 1) {
-        if idx != src {
-            let mut paths: Vec<usize> = vec![idx];
-            let mut parent = parents[idx];
-            while parent.unwrap_or_default() != src {
-                paths.insert(0, parent.unwrap());
-                parent = parents[parent.unwrap()];
+    let paths_from_src = (0..n_elems)
+        .map(|v| {
+            let mut path = vec![v];
+            while let Some(node) = parents[*path.last().unwrap()] {
+                path.push(node);
             }
-            paths.insert(0, src);
-            paths_from_src[idx].append(&mut paths);
-        }
-    }
-    paths_from_src[src].append(&mut vec![src]);
+            path.reverse();
+            path
+        })
+        .collect();
 
     (paths_from_src, dists_from_src)
 }
@@ -76,21 +72,23 @@ mod tests {
             vec![(2, 2), (3, 1), (1, 4), (7, 1), (5, 3)],
             vec![(4, 3), (7, 4)],
             vec![(0, 2), (1, 1), (2, 6), (4, 5)],
-            vec![(4, 1), (5, 4), (3, 2), (1, 6)]
+            vec![(4, 1), (5, 4), (3, 2), (1, 6)],
         ]);
-    
+
         let (paths, _dists) = djikstra(&g1, 6);
 
-        assert_eq!(paths, vec![
-            vec![6, 0],
-            vec![6, 1],
-            vec![6, 1, 3, 2],
-            vec![6, 1, 3],
-            vec![6, 1, 3, 4],
-            vec![6, 1, 3, 4, 5],
-            vec![6],
-            vec![6, 1, 3, 7]
-        ]);
+        assert_eq!(
+            paths,
+            vec![
+                vec![6, 0],
+                vec![6, 1],
+                vec![6, 1, 3, 2],
+                vec![6, 1, 3],
+                vec![6, 1, 3, 4],
+                vec![6, 1, 3, 4, 5],
+                vec![6],
+                vec![6, 1, 3, 7]
+            ]
+        );
     }
 }
-
