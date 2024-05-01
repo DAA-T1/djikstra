@@ -65,7 +65,12 @@ mod tests {
         let (paths, _dists) = djikstra(&g1, 2);
         assert_eq!(
             paths,
-            vec![Some(vec![2, 0]), Some(vec![2, 1]), Some(vec![2]), Some(vec![2, 3])]
+            vec![
+                Some(vec![2, 0]),
+                Some(vec![2, 1]),
+                Some(vec![2]),
+                Some(vec![2, 3])
+            ]
         )
     }
 
