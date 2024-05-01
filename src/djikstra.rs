@@ -41,7 +41,11 @@ pub fn djikstra(graph: &Graph, src: usize) -> (Vec<Option<Vec<usize>>>, Vec<usiz
             if path.len() > 1 {
                 Some(path)
             } else {
-                None
+                if path[0] == src {
+                    Some(path)
+                } else {
+                    None
+                }
             }
         })
         .collect();
