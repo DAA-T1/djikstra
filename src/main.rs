@@ -129,14 +129,14 @@ fn benchmark_command(args: &BenchmarkArgs, verbose: bool) {
     }
 
     // benchmark the algorithm
-    let mut results: Vec<u128> = vec![0; args.n];
+    let mut results: Vec<u128> = vec![];
 
-    for i in 0..args.n {
+    for _ in 0..args.n {
         let start = Instant::now();
         let (_paths_from_src, _dists_from_src) = djikstra(&graph, start_vertex);
         let duration = start.elapsed();
 
-        results[i] = duration.as_nanos();
+        results.push(duration.as_nanos());
     }
 
     let avg_time = results.iter().sum::<u128>() / results.len() as u128;

@@ -38,14 +38,10 @@ pub fn djikstra(graph: &Graph, src: usize) -> (Vec<Option<Vec<usize>>>, Vec<usiz
                 path.push(node);
             }
             path.reverse();
-            if path.len() > 1 {
+            if path.len() > 1 || path[0] == src {
                 Some(path)
             } else {
-                if path[0] == src {
-                    Some(path)
-                } else {
-                    None
-                }
+                None
             }
         })
         .collect();
@@ -69,7 +65,7 @@ mod tests {
         let (paths, _dists) = djikstra(&g1, 2);
         assert_eq!(
             paths,
-            vec![Some(vec![2, 0]), Some(vec![2, 1]), None, Some(vec![2, 3])]
+            vec![Some(vec![2, 0]), Some(vec![2, 1]), Some(vec![2]), Some(vec![2, 3])]
         )
     }
 
@@ -97,7 +93,7 @@ mod tests {
                 Some(vec![6, 1, 3]),
                 Some(vec![6, 1, 3, 4]),
                 Some(vec![6, 1, 3, 4, 5]),
-                None,
+                Some(vec![6]),
                 Some(vec![6, 1, 3, 7])
             ]
         );
