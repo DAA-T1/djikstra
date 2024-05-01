@@ -88,14 +88,17 @@ fn run_command(args: &RunArgs, verbose: bool) {
     let (paths_from_src, dists_from_src) = djikstra(&graph, start_vertex);
     let duration = start.elapsed();
 
-    for idx in 0..=(graph.n_vertices() - 1) {
-        let path = &paths_from_src[idx];
-        print!("{idx} {} ", dists_from_src[idx]);
-        print!("({}", path[0]);
-        for j in 1..=(path.len() - 1) {
-            print!(" -> {}", path[j]);
+    for idx in 0..graph.n_vertices() {
+        if let Some(path) = &paths_from_src[idx] {
+            print!("{idx} {} ", dists_from_src[idx]);
+            print!("({}", path[0]);
+            for vertex in path.iter().skip(1) {
+                print!(" -> {}", vertex);
+            }
+            println!(")");
+        } else {
+            println!("{idx} inf");
         }
-        println!(")");
     }
 
     println!("Algorithm ran in {0}ns.", duration.as_nanos());
