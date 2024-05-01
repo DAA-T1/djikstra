@@ -99,7 +99,6 @@ fn run_command(args: &RunArgs, verbose: bool) {
     }
 
     println!("Algorithm ran in {0}ns.", duration.as_nanos());
-    
 }
 
 /// Benchmark the Djikstra algorithm on the input graph.
