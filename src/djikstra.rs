@@ -6,7 +6,7 @@ use crate::pq::PriorityQueue;
 
 /// Djikstra algorithm that takes in a graph and a source node!
 /// Returns a list of paths
-pub fn djikstra(graph: &Graph, src: usize) -> (Vec<Vec<usize>>, Vec<usize>) {
+pub fn djikstra(graph: &Graph, src: usize) -> (Vec<Option<Vec<usize>>>, Vec<usize>) {
     let n_elems = graph.n_vertices();
     let mut parents = vec![None; n_elems];
     let mut dists_from_src = vec![usize::MAX; n_elems];
@@ -38,7 +38,11 @@ pub fn djikstra(graph: &Graph, src: usize) -> (Vec<Vec<usize>>, Vec<usize>) {
                 path.push(node);
             }
             path.reverse();
-            path
+            if path.len() > 1 {
+                Some(path)
+            } else {
+                None
+            }
         })
         .collect();
 
@@ -59,7 +63,10 @@ mod tests {
             vec![(1, 5), (2, 1)],
         ]);
         let (paths, _dists) = djikstra(&g1, 2);
-        assert_eq!(paths, vec![vec![2, 0], vec![2, 1], vec![2], vec![2, 3]])
+        assert_eq!(
+            paths,
+            vec![Some(vec![2, 0]), Some(vec![2, 1]), None, Some(vec![2, 3])]
+        )
     }
 
     #[test]
@@ -80,14 +87,14 @@ mod tests {
         assert_eq!(
             paths,
             vec![
-                vec![6, 0],
-                vec![6, 1],
-                vec![6, 1, 3, 2],
-                vec![6, 1, 3],
-                vec![6, 1, 3, 4],
-                vec![6, 1, 3, 4, 5],
-                vec![6],
-                vec![6, 1, 3, 7]
+                Some(vec![6, 0]),
+                Some(vec![6, 1]),
+                Some(vec![6, 1, 3, 2]),
+                Some(vec![6, 1, 3]),
+                Some(vec![6, 1, 3, 4]),
+                Some(vec![6, 1, 3, 4, 5]),
+                None,
+                Some(vec![6, 1, 3, 7])
             ]
         );
     }
