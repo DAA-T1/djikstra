@@ -97,7 +97,7 @@ fn run_command(args: &RunArgs, verbose: bool) {
             }
             println!(")");
         } else {
-            println!("{idx} Inf (No path exists)");
+            println!("{idx} inf");
         }
     }
 
