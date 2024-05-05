@@ -11,7 +11,7 @@ pub fn djikstra(graph: &Graph, src: usize) -> (Vec<Option<Vec<usize>>>, Vec<usiz
     let mut parents = vec![None; n_elems];
     let mut dists_from_src = vec![usize::MAX; n_elems];
     let mut checked = vec![false; n_elems];
-    let mut pq: PriorityQueue<usize> = PriorityQueue::from_keys((0..n_elems - 1).collect());
+    let mut pq: PriorityQueue<usize> = PriorityQueue::from_keys(0..n_elems - 1);
 
     dists_from_src[src] = 0;
     pq.change_key(&src, 0);
@@ -19,9 +19,7 @@ pub fn djikstra(graph: &Graph, src: usize) -> (Vec<Option<Vec<usize>>>, Vec<usiz
     while let Some((node, dist_src)) = pq.extract_min() {
         let neighbours = graph.neighbors_of(node);
 
-        for (neighbour, dist) in neighbours.iter() {
-            let neighbour = *neighbour;
-
+        for &(neighbour, dist) in neighbours.iter() {
             if !checked[neighbour] && dists_from_src[neighbour] > dist + dist_src {
                 dists_from_src[neighbour] = dist + dist_src;
                 parents[neighbour] = Some(node);
