@@ -139,7 +139,7 @@ fn benchmark_command(args: &BenchmarkArgs, verbose: bool) {
         results.push(duration.as_nanos());
     }
 
-    let avg_time = results.iter().sum::<u128>() / results.len() as u128;
+    let avg_time = results.iter().sum::<u128>() / args.n as u128;
     println!("Average time: {0}ns", avg_time);
 }
 
